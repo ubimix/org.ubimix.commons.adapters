@@ -29,6 +29,10 @@ public class AdaptableObject implements IAdaptableObject {
         return (T) obj;
     }
 
+    public IAdapterFactory getAdapterFactory() {
+        return fFactory;
+    }
+
     /**
      * @see org.webreformatter.commons.adapters.IAdaptableObject#notifyAdapters(org.webreformatter.commons.adapters.IAdapterEvent)
      */
