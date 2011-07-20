@@ -3,7 +3,6 @@
  */
 package org.webreformatter.commons.adapters;
 
-
 /**
  * @author kotelnikov
  */
