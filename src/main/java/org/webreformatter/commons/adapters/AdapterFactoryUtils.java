@@ -92,11 +92,12 @@ public class AdapterFactoryUtils {
         throw new IllegalArgumentException(msg, e);
     }
 
-    public static void registerAdapter(
+    public static IAdapterFactory registerAdapter(
         IAdapterRegistry registry,
         Class<?> adaptableType,
         final Class<?> adapterType) {
         IAdapterFactory factory = getAdapterFactory(adaptableType, adapterType);
         registry.registerAdapterFactory(factory, adapterType);
+        return factory;
     }
 }

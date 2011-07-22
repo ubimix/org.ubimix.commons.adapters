@@ -3,9 +3,14 @@ package org.webreformatter.commons.adapters;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+/**
+ * The common superclass for all adaptable objects.
+ * 
+ * @author kotelnikov
+ */
 public class AdaptableObject implements IAdaptableObject {
 
-    private Map<String, IAdapter> fAdapters = new WeakHashMap<String, IAdapter>();
+    private Map<String, Object> fAdapters = new WeakHashMap<String, Object>();
 
     private IAdapterFactory fFactory;
 
@@ -17,9 +22,9 @@ public class AdaptableObject implements IAdaptableObject {
      * @see org.webreformatter.commons.adapters.IAdaptableObject#getAdapter(java.lang.Class)
      */
     @SuppressWarnings("unchecked")
-    public synchronized <T extends IAdapter> T getAdapter(Class<T> type) {
+    public synchronized <T> T getAdapter(Class<T> type) {
         String name = type.getName();
-        IAdapter obj = fAdapters.get(name);
+        Object obj = fAdapters.get(name);
         if (obj == null || !(type.isInstance(obj))) {
             obj = fFactory.getAdapter(this, type);
             if (obj != null) {
@@ -33,13 +38,4 @@ public class AdaptableObject implements IAdaptableObject {
         return fFactory;
     }
 
-    /**
-     * @see org.webreformatter.commons.adapters.IAdaptableObject#notifyAdapters(org.webreformatter.commons.adapters.IAdapterEvent)
-     */
-    public synchronized void notifyAdapters(IAdapterEvent event) {
-        for (IAdapter adapter : fAdapters.values()) {
-            adapter.handleEvent(event);
-        }
-
-    }
 }

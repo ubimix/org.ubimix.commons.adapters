@@ -5,33 +5,28 @@ package org.webreformatter.commons.adapters;
 
 import junit.framework.TestCase;
 
-import org.webreformatter.commons.adapters.AdaptableObject;
-import org.webreformatter.commons.adapters.CompositeAdapterFactory;
-import org.webreformatter.commons.adapters.IAdapterFactory;
-import org.webreformatter.commons.adapters.ObjectAdapter;
-
 /**
  * @author kotelnikov
  */
 public class AdaptersTest extends TestCase {
 
-    public static class MyAdapter extends ObjectAdapter {
+    public static class Adapter1 {
         public static IAdapterFactory getAdapterFactory() {
             return new IAdapterFactory() {
                 @SuppressWarnings("unchecked")
                 public <T> T getAdapter(Object instance, Class<T> type) {
                     if (!(instance instanceof MyObject)
-                        || type != MyAdapter.class) {
+                        || type != Adapter1.class) {
                         return null;
                     }
-                    return (T) new MyAdapter((MyObject) instance);
+                    return (T) new Adapter1((MyObject) instance);
                 }
             };
         }
 
         private MyObject fObject;
 
-        public MyAdapter(MyObject object) {
+        public Adapter1(MyObject object) {
             super();
             fObject = object;
         }
@@ -41,16 +36,19 @@ public class AdaptersTest extends TestCase {
             if (this == obj) {
                 return true;
             }
-            if (!(obj instanceof MyAdapter)) {
+            if (!(obj instanceof Adapter1)) {
                 return false;
             }
-            MyAdapter o = (MyAdapter) obj;
+            Adapter1 o = (Adapter1) obj;
             return fObject.equals(o.fObject);
         }
 
         public MyObject getObject() {
             return fObject;
         }
+    }
+
+    public static class Adapter2 {
     }
 
     public static class MyObject extends AdaptableObject {
@@ -66,21 +64,42 @@ public class AdaptersTest extends TestCase {
         super(name);
     }
 
-    public void test() throws Exception {
+    public void test1() throws Exception {
         CompositeAdapterFactory factory = new CompositeAdapterFactory();
         factory.registerAdapterFactory(
-            MyAdapter.getAdapterFactory(),
-            MyAdapter.class);
+            Adapter1.getAdapterFactory(),
+            Adapter1.class);
 
         MyObject object = new MyObject(factory);
-        MyAdapter adapter = object.getAdapter(MyAdapter.class);
+        Adapter1 adapter = object.getAdapter(Adapter1.class);
         assertNotNull(adapter);
         assertSame(object, adapter.getObject());
 
-        MyAdapter testAdapter = object.getAdapter(MyAdapter.class);
+        Adapter1 testAdapter = object.getAdapter(Adapter1.class);
         assertSame(adapter, testAdapter);
 
-        testAdapter = factory.getAdapter(object, MyAdapter.class);
+        testAdapter = factory.getAdapter(object, Adapter1.class);
         assertEquals(adapter, testAdapter);
+    }
+
+    public void test2() {
+        CompositeAdapterFactory factory = new CompositeAdapterFactory();
+        AdapterFactoryUtils.registerAdapter(
+            factory,
+            MyObject.class,
+            Adapter2.class);
+        MyObject object = new MyObject(factory);
+        Adapter2 adapter2 = object.getAdapter(Adapter2.class);
+        assertNotNull(adapter2);
+        assertSame(adapter2, object.getAdapter(Adapter2.class));
+
+        assertNull(object.getAdapter(Adapter1.class));
+        AdapterFactoryUtils.registerAdapter(
+            factory,
+            MyObject.class,
+            Adapter1.class);
+        Adapter1 adapter1 = object.getAdapter(Adapter1.class);
+        assertNotNull(adapter1);
+        assertSame(adapter1, object.getAdapter(Adapter1.class));
     }
 }
