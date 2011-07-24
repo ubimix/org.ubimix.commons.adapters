@@ -22,16 +22,18 @@ public class AdaptableObject implements IAdaptableObject {
      * @see org.webreformatter.commons.adapters.IAdaptableObject#getAdapter(java.lang.Class)
      */
     @SuppressWarnings("unchecked")
-    public synchronized <T> T getAdapter(Class<T> type) {
-        String name = type.getName();
-        Object obj = fAdapters.get(name);
-        if (obj == null || !(type.isInstance(obj))) {
-            obj = fFactory.getAdapter(this, type);
-            if (obj != null) {
-                fAdapters.put(name, obj);
+    public <T> T getAdapter(Class<T> type) {
+        synchronized (fAdapters) {
+            String name = type.getName();
+            Object obj = fAdapters.get(name);
+            if (obj == null || !(type.isInstance(obj))) {
+                obj = fFactory.getAdapter(this, type);
+                if (obj != null) {
+                    fAdapters.put(name, obj);
+                }
             }
+            return (T) obj;
         }
-        return (T) obj;
     }
 
     public IAdapterFactory getAdapterFactory() {
