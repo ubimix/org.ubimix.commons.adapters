@@ -1,5 +1,6 @@
 package org.webreformatter.commons.adapters;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -10,7 +11,7 @@ import java.util.WeakHashMap;
  */
 public class AdaptableObject implements IAdaptableObject {
 
-    private Map<String, Object> fAdapters = new WeakHashMap<String, Object>();
+    private Map<Class<?>, Object> fAdapters = new WeakHashMap<Class<?>, Object>();
 
     private IAdapterFactory fFactory;
 
@@ -24,12 +25,11 @@ public class AdaptableObject implements IAdaptableObject {
     @SuppressWarnings("unchecked")
     public <T> T getAdapter(Class<T> type) {
         synchronized (fAdapters) {
-            String name = type.getName();
-            Object obj = fAdapters.get(name);
+            Object obj = fAdapters.get(type);
             if (obj == null || !(type.isInstance(obj))) {
                 obj = fFactory.getAdapter(this, type);
                 if (obj != null) {
-                    fAdapters.put(name, obj);
+                    fAdapters.put(type, obj);
                 }
             }
             return (T) obj;
@@ -38,6 +38,17 @@ public class AdaptableObject implements IAdaptableObject {
 
     public IAdapterFactory getAdapterFactory() {
         return fFactory;
+    }
+
+    /**
+     * Returns a map of all adapters associated with this adaptable object.
+     * 
+     * @return a map of all adapters associated with this adaptable object
+     */
+    public Map<Class<?>, Object> getAdapters() {
+        synchronized (fAdapters) {
+            return new HashMap<Class<?>, Object>(fAdapters);
+        }
     }
 
 }
