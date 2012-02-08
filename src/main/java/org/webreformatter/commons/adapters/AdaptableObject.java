@@ -1,17 +1,11 @@
 package org.webreformatter.commons.adapters;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.WeakHashMap;
-
 /**
  * The common superclass for all adaptable objects.
  * 
  * @author kotelnikov
  */
-public class AdaptableObject implements IAdaptableObject {
-
-    private Map<Class<?>, Object> fAdapters = new WeakHashMap<Class<?>, Object>();
+public class AdaptableObject extends AbstractAdaptableObject {
 
     private IAdapterFactory fFactory;
 
@@ -19,36 +13,9 @@ public class AdaptableObject implements IAdaptableObject {
         fFactory = factory;
     }
 
-    /**
-     * @see org.webreformatter.commons.adapters.IAdaptableObject#getAdapter(java.lang.Class)
-     */
-    @SuppressWarnings("unchecked")
-    public <T> T getAdapter(Class<T> type) {
-        synchronized (fAdapters) {
-            Object obj = fAdapters.get(type);
-            if (obj == null || !(type.isInstance(obj))) {
-                obj = fFactory.getAdapter(this, type);
-                if (obj != null) {
-                    fAdapters.put(type, obj);
-                }
-            }
-            return (T) obj;
-        }
-    }
-
+    @Override
     public IAdapterFactory getAdapterFactory() {
         return fFactory;
-    }
-
-    /**
-     * Returns a map of all adapters associated with this adaptable object.
-     * 
-     * @return a map of all adapters associated with this adaptable object
-     */
-    public Map<Class<?>, Object> getAdapters() {
-        synchronized (fAdapters) {
-            return new HashMap<Class<?>, Object>(fAdapters);
-        }
     }
 
 }
