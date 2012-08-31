@@ -1,4 +1,4 @@
-package org.webreformatter.commons.adapters;
+package org.ubimix.commons.adapters;
 
 /**
  * The common interface for all adapter objects.

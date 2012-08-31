@@ -1,4 +1,4 @@
-package org.webreformatter.commons.adapters;
+package org.ubimix.commons.adapters;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +17,7 @@ public abstract class AbstractAdaptableObject implements IAdaptableObject {
     }
 
     /**
-     * @see org.webreformatter.commons.adapters.IAdaptableObject#getAdapter(java.lang.Class)
+     * @see org.ubimix.commons.adapters.IAdaptableObject#getAdapter(java.lang.Class)
      */
     @SuppressWarnings("unchecked")
     public <T> T getAdapter(Class<T> type) {

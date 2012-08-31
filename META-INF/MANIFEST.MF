@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: org.webreformatter.commons.adapters
-Bundle-SymbolicName: org.webreformatter.commons.adapters
-Bundle-Version: 1.1.5
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: org.webreformatter.commons.adapters;version="1.1.5"
+Bundle-Name: org.ubimix.commons.adapters
+Bundle-SymbolicName: org.ubimix.commons.adapters
+Bundle-Version: 1.2.1
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: org.ubimix.commons.adapters;version="1.2.1"

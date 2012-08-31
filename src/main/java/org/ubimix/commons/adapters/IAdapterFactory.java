@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.webreformatter.commons.adapters;
+package org.ubimix.commons.adapters;
 
 /**
  * @author kotelnikov

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.webreformatter.commons.adapters;
+package org.ubimix.commons.adapters;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
